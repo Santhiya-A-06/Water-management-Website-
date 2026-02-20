@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanWater360 - Clean Water for Everyone</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Using Phosphor Icons as a lightweight alternative to Lucide for static usage -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-drop"></i>
+                CleanWater360
+            </a>
+
+            <button class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+                <i class="ph ph-list"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#citizen" class="nav-link">Citizen</a></li>
+                <li><a href="#volunteer" class="nav-link">Volunteer</a></li>
+                <li><a href="#admin" class="nav-link">Admin</a></li>
+                <li><a href="login.html" class="btn btn-primary">Login</a></li>
+
+                <li>
+                    <button class="theme-toggle" aria-label="Toggle Theme">
+                        <i class="ph-fill ph-moon"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- Hero Section -->
+    <!-- Hero Section -->
+    <section id="home" class="hero"
+        style="background-image: url('Assets/images/hero-bg.jpg'); background-size: cover; background-position: center;">
+        <div class="container animate-on-scroll"
+            style="display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;">
+            <div
+                style="background-color: var(--hero-box-bg); padding: 3rem; border-radius: var(--radius-lg); backdrop-filter: blur(4px); flex: 1; min-width: 300px;">
+                <h1 class="hero-title hero-text-enhanced">Empowering Citizens for<br>Cleaner Water
+                </h1>
+                <p class="hero-subtitle hero-text-enhanced">
+                    Join the CleanWater360 initiative. Report water quality issues, track improvements, and contribute
+                    to a
+                    safer environment for your community.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#citizen" class="btn btn-primary">
+                        Get Started <i class="ph ph-arrow-down"></i>
+                    </a>
+                    <a href="about.html" class="btn btn-outline">
+                        Learn More
+                    </a>
+
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+                <img src="Assets/images/monitoring.jpg" alt="Water Quality Monitoring"
+                    style="width: 100%; max-width: 500px; border-radius: var(--radius-lg); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2); border: 4px solid rgba(255, 255, 255, 0.2);">
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Stats -->
+    <!-- Impact Stats -->
+    <section class="stats-section"
+        style="background-color: var(--stats-bg); color: var(--white); padding: 4rem 1.5rem;">
+        <div class="container animate-on-scroll"
+            style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem; text-align: center;">
+            <div>
+                <h2 style="font-size: 3rem; font-weight: 800; color: var(--secondary-color);"><span
+                        class="counter-value" data-target="5000" data-suffix="+">0</span></h2>
+                <p style="opacity: 0.9; font-size: 1.1rem; color: white;">Issues Reported</p>
+            </div>
+            <div>
+                <h2 style="font-size: 3rem; font-weight: 800; color: var(--secondary-color);"><span
+                        class="counter-value" data-target="1200" data-suffix="">0</span></h2>
+                <p style="opacity: 0.9; font-size: 1.1rem; color: white;">Communities Helped</p>
+            </div>
+            <div>
+                <h2 style="font-size: 3rem; font-weight: 800; color: var(--secondary-color);"><span
+                        class="counter-value" data-target="98" data-suffix="%">0</span></h2>
+                <p style="opacity: 0.9; font-size: 1.1rem; color: white;">Resolution Rate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citizen Section -->
+    <section id="citizen" class="container" style="padding: 6rem 1.5rem;">
+        <div class="animate-on-scroll" style="text-align: center; margin-bottom: 3rem;">
+            <div
+                style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pill-citizen-bg); color: var(--pill-citizen-text); padding: 0.5rem 1rem; border-radius: 99px; margin-bottom: 1rem; font-weight: 600; font-size: 0.875rem;">
+                <i class="ph-fill ph-user"></i> CITIZEN ROLE
+            </div>
+            <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 1rem;">Be the Eyes of Your Community
+            </h2>
+            <p style="color: var(--text-light); max-width: 600px; margin: 0 auto;">Easily report pollution, leakages, or
+                quality issues directly from your smartphone. Your reports drive real change.</p>
+        </div>
+
+        <div class="feature-grid animate-on-scroll">
+            <div class="feature-card">
+                <img src="Assets/images/monitoring.jpg" alt="Report Issue"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <div class="auth-icon" style="width: 48px; height: 48px;">
+                    <i class="ph ph-camera" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3>Snap & Report</h3>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">Instantly report contamination by uploading
+                    photos and location data directly from your phone.</p>
+            </div>
+            <div class="feature-card">
+                <img src="Assets/images/water-sampling.jpg" alt="Real-time Alerts"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <div class="auth-icon" style="width: 48px; height: 48px; background-color: #d1fae5; color: #059669;">
+                    <i class="ph ph-bell" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3>Real-time Alerts</h3>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">Get notified about water quality issues in your
+                    specific neighborhood.</p>
+            </div>
+            <div class="feature-card"
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+                <h3 style="color: white; margin-bottom: 1rem;">Ready to help?</h3>
+                <a href="auth-citizen.html" class="btn" style="background: white; color: var(--primary-color);">Login as
+                    Citizen</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Volunteer Section -->
+    <section id="volunteer" style="background-color: var(--bg-light); padding: 6rem 1.5rem;">
+        <div class="container">
+            <div class="animate-on-scroll" style="text-align: center; margin-bottom: 3rem;">
+                <div
+                    style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pill-volunteer-bg); color: var(--pill-volunteer-text); padding: 0.5rem 1rem; border-radius: 99px; margin-bottom: 1rem; font-weight: 600; font-size: 0.875rem;">
+                    <i class="ph-fill ph-hand-heart"></i> VOLUNTEER ROLE
+                </div>
+                <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 1rem;">Take Action on the Ground
+                </h2>
+                <p style="color: var(--text-light); max-width: 600px; margin: 0 auto;">Join our network of field
+                    volunteers to verify reports, collect samples, and lead local cleanup drives.</p>
+            </div>
+
+            <div class="feature-grid animate-on-scroll">
+                <div class="feature-card">
+                    <img src="Assets/images/volunteer-cleanup.jpg" alt="Join Cleanup"
+                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                    <div class="auth-icon" style="background-color: #d1fae5; color: #059669;">
+                        <i class="ph ph-map-pin" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h3>Field Verification</h3>
+                    <p style="color: var(--text-light); margin-top: 0.5rem;">Visit reported sites to validate claims and
+                        assess severity.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="Assets/images/lab-analysis.jpg" alt="Analysis Support"
+                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                    <div class="auth-icon" style="background-color: #d1fae5; color: #059669;">
+                        <i class="ph ph-flask" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h3>Sample Collection</h3>
+                    <p style="color: var(--text-light); margin-top: 0.5rem;">Collect water samples for laboratory
+                        testing using provided kits.</p>
+                </div>
+                <div class="feature-card"
+                    style="display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+                    <h3 style="color: var(--white); margin-bottom: 1rem;">Join the Force</h3>
+                    <a href="auth-volunteer.html" class="btn" style="background: var(--white); color: #047857;">Login as
+                        Volunteer</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Section -->
+    <section id="admin" class="container" style="padding: 6rem 1.5rem;">
+        <div class="animate-on-scroll" style="text-align: center; margin-bottom: 3rem;">
+            <div
+                style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pill-admin-bg); color: var(--pill-admin-text); padding: 0.5rem 1rem; border-radius: 99px; margin-bottom: 1rem; font-weight: 600; font-size: 0.875rem;">
+                <i class="ph-fill ph-shield-check"></i> ADMIN ROLE
+            </div>
+            <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 1rem;">Manage & Orchestrate</h2>
+            <p style="color: var(--text-light); max-width: 600px; margin: 0 auto;">Ensure efficient resolution of
+                issues, manage resources, and oversee the entire water safety ecosystem.</p>
+        </div>
+
+        <div class="feature-grid animate-on-scroll">
+            <div class="feature-card">
+                <img src="Assets/images/data-analytics.jpg" alt="Live Dashboards"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <div class="auth-icon" style="background-color: #fee2e2; color: #dc2626;">
+                    <i class="ph ph-chart-bar" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3>Data Analytics</h3>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">Visualize trends and identify hotspots for
+                    proactive intervention.</p>
+            </div>
+            <div class="feature-card">
+                <img src="Assets/images/community.jpg" alt="Civic Interaction"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <div class="auth-icon" style="background-color: #fee2e2; color: #dc2626;">
+                    <i class="ph ph-users" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3>Resource Allocation</h3>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">Assign volunteers and specialized teams to
+                    critical issues.</p>
+            </div>
+            <div class="feature-card"
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+                <h3 style="color: var(--white); margin-bottom: 1rem;">Access Portal</h3>
+                <a href="auth-admin.html" class="btn" style="background: #0284c7; color: white;">Login as
+                    Admin</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section style="background-color: var(--section-bg-alt); padding: 4rem 1.5rem;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2rem; color: var(--text-dark);">Community
+                Voices</h2>
+            <div class="feature-grid">
+                <div class="feature-card" style="border-left: 4px solid #0284c7; background: var(--card-bg);">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <img src="Assets/images/avatar-1.jpg" alt="Sarah J."
+                            style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        <div>
+                            <h4 style="font-weight: 700; margin: 0;">Sarah Jenkins</h4>
+                            <span style="font-size: 0.875rem; color: var(--text-light);">Citizen Reporter</span>
+                        </div>
+                    </div>
+                    <p style="font-style: italic; color: var(--text-light);">"CleanWater360 transformed how we deal with
+                        local pollution. I reported a leak and it was fixed within 24 hours!"</p>
+                </div>
+                <div class="feature-card" style="border-left: 4px solid #0284c7; background: var(--card-bg);">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <img src="Assets/images/avatar-2.jpg" alt="Mark R."
+                            style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        <div>
+                            <h4 style="font-weight: 700; margin: 0;">David Chen</h4>
+                            <span style="font-size: 0.875rem; color: var(--text-light);">Community Volunteer</span>
+                        </div>
+                    </div>
+                    <p style="font-style: italic; color: var(--text-light);">"As a volunteer, having a clear map of
+                        issues helps me prioritize where to go. It's efficient and impactful."</p>
+                </div>
+                <div class="feature-card" style="border-left: 4px solid #0284c7; background: var(--card-bg);">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <img src="Assets/images/avatar-3.jpg" alt="Elena K."
+                            style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        <div>
+                            <h4 style="font-weight: 700; margin: 0;">Maria Rodriguez</h4>
+                            <span style="font-size: 0.875rem; color: var(--text-light);">Local Activist</span>
+                        </div>
+                    </div>
+                    <p style="font-style: italic; color: var(--text-light);">"This platform gives us the data we need to
+                        hold authorities accountable and ensure safe water for all."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="container" style="padding: 4rem 1.5rem;">
+        <div class="faq-container">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2rem; color: var(--text-dark);">Frequently
+                Asked
+                Questions</h2>
+            <div style="max-width: 800px; margin: 0 auto; display: grid; gap: 1.5rem;">
+                <div
+                    style="background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius-sm); border-left: 4px solid var(--secondary-color);">
+                    <h4
+                        style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-color);">
+                        Is CleanWater360 free to use?
+                    </h4>
+                    <p style="color: var(--text-light);">Yes! The platform is completely free for all citizens and
+                        volunteers.</p>
+                </div>
+                <div
+                    style="background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius-sm); border-left: 4px solid var(--secondary-color);">
+                    <h4
+                        style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-color);">
+                        How quickly are reports
+                        addressed?</h4>
+                    <p style="color: var(--text-light);">Turnaround time varies by issue severity, but critical alerts
+                        are
+                        typically triaged within 2 hours.</p>
+                </div>
+                <div
+                    style="background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius-sm); border-left: 4px solid var(--secondary-color);">
+                    <h4
+                        style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-color);">
+                        Can I remain anonymous?</h4>
+                    <p style="color: var(--text-light);">Absolutely. You can choose to submit reports anonymously,
+                        though
+                        creating an account helps track progress.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" style="background-color: var(--section-bg-alt);">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-icon">1</div>
+                    <div class="step-content">
+                        <h3>Report Issue</h3>
+                        <p>Snap a photo, verify location, and submit via the app instantly.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon">2</div>
+                    <div class="step-content">
+                        <h3>Verify & Triage</h3>
+                        <p>Local volunteers check the site while our system flags severity.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon">3</div>
+                    <div class="step-content">
+                        <h3>Action Taken</h3>
+                        <p>Authorities dispatch teams to resolve the problem efficiently.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News/Blog Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Latest Updates</h2>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <article
+                    style="background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                    <img src="Assets/images/tech-support.jpg" alt="Technical Support"
+                        style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <span style="color: aquamarine; font-weight: 600; font-size: 0.875rem;">Technology</span>
+                        <h3 style="margin: 0.5rem 0; font-size: 1.25rem; color: var(--text-dark);">New Sensors Deployed
+                            in North District</h3>
+                        <p style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1rem;">We've installed 50
+                            new IoT water quality sensors to monitor contamination levels in real-time.</p>
+                        <a href="#" style="color: var(--secondary-color); font-weight: 600; text-decoration: none;">Read
+                            More &rarr;</a>
+                    </div>
+                </article>
+                <article
+                    style="background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                    <img src="Assets/images/consultation.jpg" alt="Expert Consultation"
+                        style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <span style="color: aquamarine; font-weight: 600; font-size: 0.875rem;">Education</span>
+                        <h3 style="margin: 0.5rem 0; font-size: 1.25rem; color: var(--text-dark);">Water Conservation
+                            Workshop</h3>
+                        <p style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1rem;">Join our upcoming
+                            workshop to learn practical tips for reducing water usage at home.
+                            <br><img src="Assets/images/map-preview.jpg" alt="Mapping Support"
+                                style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-top: 0.5rem;">
+                        </p>
+                        <a href="#" style="color: var(--secondary-color); font-weight: 600; text-decoration: none;">Read
+                            More
+                            &rarr;</a>
+                    </div>
+                </article>
+                <article
+                    style="background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                    <img src="Assets/images/training.jpg" alt="Training Sessions"
+                        style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <span style="color:aquamarine; font-weight: 600; font-size: 0.875rem;">Policy</span>
+                        <h3 style="margin: 0.5rem 0; font-size: 1.25rem; color: var(--text-dark);">New Water
+                            Conservation Guidelines</h3>
+                        <p style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1rem;">City council has
+                            approved new guidelines for industrial water usage effective next month.</p>
+                        <a href="#" style="color: var(--secondary-color); font-weight: 600; text-decoration: none;">Read
+                            More &rarr;</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Connect With Us Section -->
+    <section style="background-color: var(--section-bg-alt); padding: 4rem 1.5rem;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2rem; color: var(--secondary-color);">Connect
+                With Us</h2>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 4rem; align-items: center;">
+                <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                    <i class="ph-fill ph-facebook-logo" style="font-size: 4rem;"></i>
+                </a>
+                <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                    <i class="ph-fill ph-twitter-logo" style="font-size: 4rem;"></i>
+                </a>
+                <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                    <i class="ph-fill ph-instagram-logo" style="font-size: 4rem;"></i>
+                </a>
+                <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                    <i class="ph-fill ph-linkedin-logo" style="font-size: 4rem;"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3 style="color: blanchedalmond;">CleanWater360</h3>
+                <p style="color: blanchedalmond; max-width: 250px;">
+                    Bridging the gap between citizens and authorities for a safer, healthier water future.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3 style="color: blanchedalmond;">Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html">Report Issue</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 style="color: blanchedalmond;">Contact</h3>
+                <ul>
+                    <li><i class="ph ph-envelope"></i> support@cleanwater360.org</li>
+                    <li><i class="ph ph-phone"></i> +1 (555) 123-4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 CleanWater360. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

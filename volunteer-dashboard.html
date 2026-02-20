@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Dashboard - CleanWater360</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-drop"></i>
+                CleanWater360
+            </a>
+
+            <button class="menu-toggle"><i class="ph ph-list"></i></button>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="volunteer-dashboard.html" class="nav-link active">Dashboard</a></li>
+
+                <li><a href="index.html" class="btn btn-outline">Logout</a></li>
+                <li><button class="theme-toggle"><i class="ph-fill ph-moon"></i></button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-tab="overview">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="#" class="sidebar-link" data-tab="tasks">
+                    <i class="ph ph-list-checks"></i> Tasks
+                </a>
+                <a href="#" class="sidebar-link" data-tab="map">
+                    <i class="ph ph-map-trifold"></i> Map View
+                </a>
+                <a href="#" class="sidebar-link" data-tab="history">
+                    <i class="ph ph-clock-counter-clockwise"></i> History
+                </a>
+                <a href="#" class="sidebar-link" data-tab="settings">
+                    <i class="ph ph-gear"></i> Settings
+                </a>
+                <a href="login.html" class="sidebar-link" style="margin-top: auto; font-weight: 600;">
+                    <i class="ph ph-sign-out"></i> Sign Out
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <div id="overview" class="dashboard-section active">
+                <header class="dashboard-header" style="background-image: url('Assets/images/volunteer-hero.jpg');">
+                    <div>
+                        <h1 id="welcome-message" style="font-size: 2.5rem; font-weight: 800;">Volunteer Panel</h1>
+                        <p style="font-size: 1.1rem; font-weight: 500;">Active tasks assigned for field verification.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" data-tab-switch="map">
+                            <i class="ph ph-map-pin"></i> View Map
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Stats Section -->
+                <section style="margin-bottom: 3.5rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Your Weekly Impact</h2>
+                    <ul
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; list-style: none; padding: 0; margin-bottom: 2rem;">
+                        <li
+                            style="background: var(--white); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); text-align: center;">
+                            <i class="ph ph-check-circle"
+                                style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
+                            <h3 class="counter-value" data-target="12" style="font-size: 1.75rem; font-weight: 800;">0
+                            </h3>
+
+                            <p style="color: var(--text-light); font-size: 0.9rem;">Tasks Completed</p>
+                        </li>
+                        <li
+                            style="background: var(--white); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); text-align: center;">
+                            <i class="ph ph-footprints"
+                                style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
+                            <h3 class="counter-value" data-target="24" data-suffix="km"
+                                style="font-size: 1.75rem; font-weight: 800;">0km</h3>
+
+                            <p style="color: var(--text-light); font-size: 0.9rem;">Area Covered</p>
+                        </li>
+                    </ul>
+
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Task Completion Trend</h3>
+                            <canvas id="volunteerTasksChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Distance Covered (km)</h3>
+                            <canvas id="volunteerDistanceChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Equipment Readiness</h3>
+                            <canvas id="volunteerEquipmentChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tasks Section -->
+            <div id="tasks" class="dashboard-section">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Assigned Field Tasks</h2>
+                <div class="feature-grid"
+                    style="margin-top: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div class="feature-card" style="border-top: 4px solid #dc2626;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.25rem;">
+                            <span
+                                style="background: #fee2e2; color: #991b1b; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.75rem; font-weight: 800;">URGENT</span>
+                            <span style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">2.4km
+                                away</span>
+                        </div>
+                        <img src="Assets/images/cleanup-action.jpg" alt="Chemical Dump"
+                            style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                        <h3 style="margin-bottom: 0.75rem; font-size: 1.25rem;">Suspected Chemical Dump</h3>
+                        <p
+                            style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                            <strong>Location:</strong> East River Bank<br>
+                            <strong>Ref:</strong> #CW-TRX-942
+                        </p>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem;">Verify
+                                Now</button>
+                        </div>
+                    </div>
+                    <div class="feature-card" style="border-top: 4px solid #f59e0b;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.25rem;">
+                            <span
+                                style="background: #fff7ed; color: #9a3412; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.75rem; font-weight: 800;">NORMAL</span>
+                            <span style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">1.2km
+                                away</span>
+                        </div>
+                        <img src="Assets/images/water-sampling.jpg" alt="Pipe Leak"
+                            style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                        <h3 style="margin-bottom: 0.75rem; font-size: 1.25rem;">Main Pipe Inspection</h3>
+                        <p
+                            style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                            <strong>Location:</strong> Westside Park Area<br>
+                            <strong>Ref:</strong> #CW-TRX-810
+                        </p>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem;">Accept
+                                Task</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map View Section -->
+            <div id="map" class="dashboard-section">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Field Map</h2>
+                <div class="map-container" id="volunteerMap"></div>
+            </div>
+
+            <!-- History Section -->
+            <div id="history" class="dashboard-section">
+                <section style="margin-bottom: 4rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Monthly Volunteering Impact</h2>
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1.5rem; font-size: 1rem;">Community Verifications</h3>
+                            <canvas id="volunteerImpactChart"></canvas>
+                        </div>
+                    </div>
+                    <div
+                        style="background: var(--white); padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-top: 2rem;">
+                        <p style="color: var(--text-light); line-height: 1.6;">You've participated in <strong>8
+                                community cleanups</strong> and verified <strong>32 reports</strong> this year. Your
+                            dedication has helped maintain 100% water security in your district.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="dashboard-section">
+                <section style="margin-bottom: 4rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Volunteer Preferences</h2>
+                    <div
+                        style="background: var(--white); padding: 3rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem;">Active Availability</h4>
+                                    <p style="font-size: 0.875rem; color: var(--text-light);">Show yourself as 'Online'
+                                        for emergency tasks.</p>
+                                </div>
+                                <div
+                                    style="width: 44px; height: 24px; background: #10b981; border-radius: 12px; position: relative; cursor: pointer;">
+                                    <div
+                                        style="width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; right: 3px; top: 3px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1.5rem;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem;">Proximity Alerts</h4>
+                                    <p style="font-size: 0.875rem; color: var(--text-light);">Notify me of tasks within
+                                        5km radius.</p>
+                                </div>
+                                <div
+                                    style="width: 44px; height: 24px; background: var(--primary-color); border-radius: 12px; position: relative; cursor: pointer;">
+                                    <div
+                                        style="width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; right: 3px; top: 3px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Update
+                            Availability</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Social Links Section -->
+            <section style="padding: 3rem 1.5rem; background: var(--bg-light); border-top: 1px solid rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 3rem; align-items: center;">
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-facebook-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-twitter-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-instagram-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-linkedin-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Standardized Footer -->
+            <footer class="footer" style="margin-top: auto;">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h3 style="color: blanchedalmond;">CleanWater360</h3>
+                        <p style="color: blanchedalmond; max-width: 250px;">
+                            Bridging the gap between citizens and authorities for a safer, healthier water future.
+                        </p>
+                    </div>
+                    <div class="footer-col">
+                        <h3 style="color: blanchedalmond;">Quick Links</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="login.html" class="nav-link">Report Issue</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3 style="color: blanchedalmond;">Contact</h3>
+                        <ul>
+                            <li><i class="ph ph-envelope"></i> support@cleanwater360.org</li>
+                            <li><i class="ph ph-phone"></i> +1 (555) 123-4567</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    &copy; 2026 CleanWater360. All rights reserved.
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard-charts.js"></script>
+</body>
+
+</html>

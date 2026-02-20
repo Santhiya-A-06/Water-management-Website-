@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Access - CleanWater360</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-drop"></i>
+                CleanWater360
+            </a>
+
+            <button class="menu-toggle"><i class="ph ph-list"></i></button>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="login.html" class="nav-link">Back to Roles</a></li>
+                <li><button class="theme-toggle"><i class="ph-fill ph-moon"></i></button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card" style="max-width: 450px; width: 100%; text-align: left; align-items: stretch;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div class="auth-icon" style="margin: 0 auto 1rem;">
+                    <i class="ph ph-user" style="font-size: 2rem;"></i>
+                </div>
+                <h1 class="auth-title">Citizen Portal</h1>
+                <p class="auth-desc">Manage your reports and profile.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-target="login-form">Sign In</div>
+                <div class="auth-tab" data-target="register-form">Create Account</div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active" action="citizen-dashboard.html">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" placeholder="Alex Smith" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                    <a href="#" style="color: var(--primary-color);">Forgot password?</a>
+                </p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" action="citizen-dashboard.html">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location (City)</label>
+                    <input type="text" class="form-input" placeholder="New York, NY">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3 style="color: blanchedalmond;">CleanWater360</h3>
+                <p style="color: blanchedalmond; max-width: 250px;">
+                    Bridging the gap between citizens and authorities for a safer, healthier water future.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3 style="color: blanchedalmond;">Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html" class="nav-link">Report Issue</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 style="color: blanchedalmond;">Contact</h3>
+                <ul>
+                    <li><i class="ph ph-envelope"></i> support@cleanwater360.org</li>
+                    <li><i class="ph ph-phone"></i> +1 (555) 123-4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 CleanWater360. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="rain.js"></script>
+</body>
+
+</html>

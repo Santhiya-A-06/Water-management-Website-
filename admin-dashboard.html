@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CleanWater360</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+    <nav class="navbar">
+
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-drop"></i>
+                CleanWater360 <span class="pill pill-citizen">ADMIN</span>
+            </a>
+
+            <button class="menu-toggle"><i class="ph ph-list"></i></button>
+            <ul class="nav-links">
+                <li><a href="admin-dashboard.html" class="nav-link active">Overview</a></li>
+
+                <li><a href="#" class="nav-link">Users</a></li>
+                <li><a href="#" class="nav-link">Settings</a></li>
+                <li><a href="index.html" class="btn btn-outline">Logout</a></li>
+                <li><button class="theme-toggle"><i class="ph-fill ph-moon"></i></button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-tab="overview">
+                    <i class="ph ph-squares-four"></i> Overview
+                </a>
+                <a href="#" class="sidebar-link" data-tab="users">
+                    <i class="ph ph-users"></i> Users
+                </a>
+                <a href="#" class="sidebar-link" data-tab="analytics">
+                    <i class="ph ph-chart-line-up"></i> Analytics
+                </a>
+                <a href="#" class="sidebar-link" data-tab="reports">
+                    <i class="ph ph-file-text"></i> Reports
+                </a>
+                <a href="#" class="sidebar-link" data-tab="system">
+                    <i class="ph ph-gear"></i> System
+                </a>
+                <a href="login.html" class="sidebar-link" style="margin-top: auto; font-weight: 600;">
+                    <i class="ph ph-sign-out"></i> Sign Out
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <div id="overview" class="dashboard-section active">
+                <header class="dashboard-header" style="background-image: url('Assets/images/digital-earth.jpg');">
+                    <div>
+                        <h1 id="welcome-message" style="font-size: 2.5rem; font-weight: 800;">System Overview</h1>
+                        <p style="font-size: 1.1rem; font-weight: 500;">Monitoring water quality across all districts.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-plus-circle"></i> New Task
+                        </button>
+                        <button class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-export"></i> Reports
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Quick Alerts Feed -->
+                <div class="alert-banner alert-danger">
+                    <i class="ph ph-warning-circle"></i>
+                    <p>3 critical contamination reports in District 4 need immediate verification.</p>
+                    <button class="btn btn-primary">View Reports</button>
+                </div>
+
+
+                <div class="stats-grid animate-on-scroll">
+                    <div class="stats-card stats-primary">
+                        <p class="stats-label">Total Reports</p>
+                        <h2 class="counter-value" data-target="1248">0</h2>
+                        <p class="stats-trend trend-up"><i class="ph ph-arrow-up"></i> +12% this week</p>
+                    </div>
+                    <div class="stats-card stats-warning">
+                        <p class="stats-label">Pending Review</p>
+                        <h2 class="counter-value" data-target="45">0</h2>
+                        <p class="stats-muted">2 urgent issues</p>
+                    </div>
+                    <div class="stats-card stats-success">
+                        <p class="stats-label">Resolved Today</p>
+                        <h2 class="counter-value" data-target="18">0</h2>
+                        <p class="stats-trend trend-up">Efficiency up 5%</p>
+                    </div>
+                </div>
+
+
+                <!-- Charts Section -->
+                <section style="margin-bottom: 3.5rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Analytics Overview</h2>
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Reports vs Resolved</h3>
+                            <canvas id="adminReportsChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Issue Types</h3>
+                            <canvas id="adminIssuesChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Budget Allocation</h3>
+                            <canvas id="adminBudgetChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Response Time Heatmap</h3>
+                            <canvas id="adminResponseChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="dashboard-section">
+                <section style="margin-bottom: 4rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">User Management</h2>
+                    <div class="chart-grid" style="margin-bottom: 3rem;">
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Community Growth</h3>
+                            <canvas id="userGrowthChart"></canvas>
+                        </div>
+                    </div>
+                    <div
+                        style="background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); overflow: hidden;">
+                        <div
+                            style="padding: 1.5rem; background: var(--bg-light); border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <h3 style="font-size: 1.1rem;">Registered Members</h3>
+                                <div style="position: relative;">
+                                    <i class="ph ph-magnifying-glass"
+                                        style="position: absolute; left: 10px; top: 10px; color: var(--text-light);"></i>
+                                    <input type="text" placeholder="Search..."
+                                        style="padding: 0.5rem 1rem 0.5rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.1); font-size: 0.875rem; background: var(--white); color: var(--text-dark);">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Add
+                                User</button>
+                        </div>
+                        <div style="padding: 0; overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                                <thead
+                                    style="background: rgba(0,0,0,0.02); text-align: left; font-size: 0.875rem; color: var(--text-light);">
+                                    <tr>
+                                        <th style="padding: 1rem 1.5rem;">User</th>
+                                        <th style="padding: 1rem 1.5rem;">Role</th>
+                                        <th style="padding: 1rem 1.5rem;">Status</th>
+                                        <th style="padding: 1rem 1.5rem;">Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 0.9rem;">
+                                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                        <td
+                                            style="padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                                            <div
+                                                style="width: 32px; height: 32px; border-radius: 50%; background: var(--secondary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                                                JD</div>
+                                            <div>
+                                                <div style="font-weight: 600;">John Doe</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-light);">
+                                                    john@example.com</div>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 1rem 1.5rem;"><span
+                                                style="background: var(--pill-citizen-bg); color: var(--pill-citizen-text); padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">CITIZEN</span>
+                                        </td>
+                                        <td style="padding: 1rem 1.5rem;"><span style="color: #10b981;">Active</span>
+                                        </td>
+                                        <td style="padding: 1rem 1.5rem;">Jan 12, 2026</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                        <td
+                                            style="padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                                            <div
+                                                style="width: 32px; height: 32px; border-radius: 50%; background: #a855f7; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                                                AS</div>
+                                            <div>
+                                                <div style="font-weight: 600;">Alice Smith</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-light);">
+                                                    alice@field.org</div>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 1rem 1.5rem;"><span
+                                                style="background: var(--pill-volunteer-bg); color: var(--pill-volunteer-text); padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">VOLUNTEER</span>
+                                        </td>
+                                        <td style="padding: 1rem 1.5rem;"><span style="color: #10b981;">Active</span>
+                                        </td>
+                                        <td style="padding: 1rem 1.5rem;">Feb 05, 2026</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="dashboard-section">
+                <section style="margin-bottom: 3.5rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Key Performance Indicators</h2>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="chart-card" style="padding: 1.5rem; border-top: 4px solid var(--primary-color);">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <p style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">Water
+                                        Loss Rate</p>
+                                    <h3 class="counter-value" data-target="14" data-suffix="%"
+                                        style="font-size: 2rem; font-weight: 800; margin-top: 0.25rem;">0%</h3>
+                                </div>
+                                <div style="background: rgba(14, 165, 233, 0.1); padding: 0.5rem; border-radius: 8px;">
+                                    <i class="ph ph-drop-half-bottom"
+                                        style="color: var(--primary-color); font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #059669; font-weight: 600;">
+                                <i class="ph ph-arrow-down"></i> 2.1% from last month
+                            </div>
+                        </div>
+                        <div class="chart-card" style="padding: 1.5rem; border-top: 4px solid #10b981;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <p style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">Avg.
+                                        Response Time</p>
+                                    <h3 class="counter-value" data-target="4" data-suffix="h"
+                                        style="font-size: 2rem; font-weight: 800; margin-top: 0.25rem;">0h</h3>
+                                </div>
+                                <div style="background: rgba(16, 185, 129, 0.1); padding: 0.5rem; border-radius: 8px;">
+                                    <i class="ph ph-timer" style="color: #10b981; font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #059669; font-weight: 600;">
+                                <i class="ph ph-arrow-down"></i> 15% improvement
+                            </div>
+                        </div>
+                        <div class="chart-card" style="padding: 1.5rem; border-top: 4px solid #f59e0b;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <p style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">Citizen
+                                        Satisfaction</p>
+                                    <h3 class="counter-value" data-target="4" data-suffix=".8/5"
+                                        style="font-size: 2rem; font-weight: 800; margin-top: 0.25rem;">0/5</h3>
+                                </div>
+                                <div style="background: rgba(245, 158, 11, 0.1); padding: 0.5rem; border-radius: 8px;">
+                                    <i class="ph ph-smiley" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #059669; font-weight: 600;">
+                                <i class="ph ph-arrow-up"></i> +0.3 pts
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Regional Monitoring Map</h2>
+                    <div class="map-container" id="adminMap"></div>
+                </section>
+            </div>
+
+            <!-- Reports Section -->
+            <div id="reports" class="dashboard-section">
+                <section style="margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Recent Triage Queue</h2>
+                    <div
+                        style="background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow-x: auto; border: 1px solid rgba(0,0,0,0.05);">
+                        <table style="width: 100%; border-collapse: collapse; min-width: 700px;">
+                            <thead style="background-color: var(--bg-light); text-align: left;">
+                                <tr>
+                                    <th style="padding: 1.25rem;">Report Details</th>
+                                    <th style="padding: 1.25rem;">Reporter</th>
+                                    <th style="padding: 1.25rem;">Severity</th>
+                                    <th style="padding: 1.25rem;">Status</th>
+                                    <th style="padding: 1.25rem;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                    <td style="padding: 1.25rem;">
+                                        <strong>Discolored Water</strong><br>
+                                        <span style="font-size: 0.875rem; color: var(--text-light);">Downtown Area -
+                                            Zone
+                                            4</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">Jane Doe</td>
+                                    <td style="padding: 1.25rem;"><span
+                                            style="background: #fee2e2; color: #991b1b; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">CRITICAL</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;"><span
+                                            style="color: #f59e0b; font-weight: 600;">Pending</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">
+                                        <button class="btn btn-primary"
+                                            style="padding: 0.5rem 1rem; font-size: 0.875rem;">Assign</button>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                    <td style="padding: 1.25rem;">
+                                        <strong>Broken Hydrant</strong><br>
+                                        <span style="font-size: 0.875rem; color: var(--text-light);">Westside
+                                            Park</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">John Smith</td>
+                                    <td style="padding: 1.25rem;"><span
+                                            style="background: #fff7ed; color: #9a3412; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">HIGH</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;"><span
+                                            style="color: #f59e0b; font-weight: 600;">Pending</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">
+                                        <button class="btn btn-primary"
+                                            style="padding: 0.5rem 1rem; font-size: 0.875rem;">Assign</button>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                    <td style="padding: 1.25rem;">
+                                        <strong>Low Pressure</strong><br>
+                                        <span style="font-size: 0.875rem; color: var(--text-light);">Uptown
+                                            Residency</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">Mike Ross</td>
+                                    <td style="padding: 1.25rem;"><span
+                                            style="background: #d1fae5; color: #065f46; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">LOW</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;"><span style="color: #10b981; font-weight: 600;">In
+                                            Progress</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">
+                                        <button class="btn btn-outline"
+                                            style="padding: 0.5rem 1rem; font-size: 0.875rem;">Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- System Section -->
+            <div id="system" class="dashboard-section">
+                <section style="margin-bottom: 4rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">System Health & Infrastructure</h2>
+                    <div class="chart-grid" style="margin-bottom: 2rem;">
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1.5rem; font-size: 1rem;">Server Uptime</h3>
+                            <div style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <div style="text-align: center;">
+                                    <h4 class="counter-value" data-target="99" data-suffix=".98%"
+                                        style="font-size: 3rem; color: #10b981;">0</h4>
+                                    <p style="color: var(--text-light); font-weight: 600;">All Systems Operational</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3 style="margin-bottom: 1.5rem; font-size: 1rem;">Real-time Resource Load</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="font-size: 0.875rem; font-weight: 600;">API Throughput</span>
+                                        <span style="font-size: 0.875rem; color: var(--text-light);">840 req/s</span>
+                                    </div>
+                                    <div
+                                        style="height: 8px; background: var(--bg-light); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 75%; height: 100%; background: var(--primary-color);"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="font-size: 0.875rem; font-weight: 600;">Database Latency</span>
+                                        <span style="font-size: 0.875rem; color: var(--text-light);">12ms</span>
+                                    </div>
+                                    <div
+                                        style="height: 8px; background: var(--bg-light); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 25%; height: 100%; background: #10b981;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Critical System Logs</h3>
+                    <div
+                        style="background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem;">
+                        <div
+                            style="font-family: monospace; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div style="display: flex; gap: 1rem;">
+                                <span style="color: #6b7280;">[20:34:12]</span>
+                                <span style="color: #10b981; font-weight: 600;">INFO</span>
+                                <span style="color: var(--text-main);">Backup synchronization completed
+                                    successfully.</span>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <span style="color: #6b7280;">[19:45:08]</span>
+                                <span style="color: #f59e0b; font-weight: 600;">WARN</span>
+                                <span style="color: var(--text-main);">Disk usage exceeded 70% on Volume-B.</span>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <span style="color: #6b7280;">[18:12:44]</span>
+                                <span style="color: #ef4444; font-weight: 600;">ERROR</span>
+                                <span style="color: var(--text-main);">Failed to contact Sensor-TX88 in District
+                                    4.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Social Links Section -->
+            <section style="padding: 3rem 1.5rem; background: var(--bg-light); border-top: 1px solid rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 3rem; align-items: center;">
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-facebook-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-twitter-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-instagram-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
+                        <i class="ph-fill ph-linkedin-logo" style="font-size: 2.5rem;"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Standardized Footer -->
+            <footer class="footer" style="margin-top: auto;">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h3 style="color: blanchedalmond;">CleanWater360</h3>
+                        <p style="color: blanchedalmond; max-width: 250px;">
+                            Bridging the gap between citizens and authorities for a safer, healthier water future.
+                        </p>
+                    </div>
+                    <div class="footer-col">
+                        <h3 style="color: blanchedalmond;">Quick Links</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="login.html" class="nav-link">Report Issue</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3 style="color: blanchedalmond;">Contact</h3>
+                        <ul>
+                            <li><i class="ph ph-envelope"></i> support@cleanwater360.org</li>
+                            <li><i class="ph ph-phone"></i> +1 (555) 123-4567</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    &copy; 2026 CleanWater360. All rights reserved.
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard-charts.js"></script>
+</body>
+
+</html>
