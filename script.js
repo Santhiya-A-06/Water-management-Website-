@@ -1,3 +1,5 @@
+const API_BASE_URL = 'http://localhost:5000/api';
+
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile Menu Logic
   const menuToggle = document.querySelector('.menu-toggle');
@@ -152,18 +154,38 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Capture Name on Login/Register
   const authForms = document.querySelectorAll('.auth-form');
   authForms.forEach(form => {
-    form.addEventListener('submit', (e) => {
-      let nameInput = form.querySelector('input[type="text"]');
-      let userName = "User";
-      if (nameInput && nameInput.value) {
-        userName = nameInput.value;
-      } else {
-        const emailInput = form.querySelector('input[type="email"]');
-        if (emailInput && emailInput.value) {
-          userName = emailInput.value.split('@')[0];
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const isRegister = form.id === 'register-form';
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const endpoint = isRegister ? '/auth/register' : '/auth/login';
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          localStorage.setItem('currentUser', result.user.name);
+          localStorage.setItem('currentUserId', result.user.id);
+          localStorage.setItem('userRole', result.user.role);
+          localStorage.setItem('token', result.token);
+
+          // Redirect based on role
+          if (result.user.role === 'admin') window.location.href = 'admin-dashboard.html';
+          else if (result.user.role === 'volunteer') window.location.href = 'volunteer-dashboard.html';
+          else window.location.href = 'citizen-dashboard.html';
+        } else {
+          alert(result.msg || 'Authentication failed');
         }
+      } catch (err) {
+        console.error('Auth error:', err);
+        alert('Connection error. Is the server running?');
       }
-      localStorage.setItem('currentUser', userName);
     });
   });
 
@@ -204,21 +226,52 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (reportForm) {
-    reportForm.addEventListener('submit', (e) => {
+    reportForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = reportForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<i class="ph ph-check"></i> Submitted!';
-      submitBtn.style.background = '#059669';
 
-      setTimeout(() => {
-        modalOverlay.style.display = 'none';
-        document.body.style.overflow = '';
-        reportForm.reset();
+      const formData = new FormData(reportForm);
+      const data = Object.fromEntries(formData.entries());
+      data.reporterId = localStorage.getItem('currentUserId');
+
+      if (!data.reporterId) {
+        alert('Please login to submit a report');
+        return;
+      }
+
+      submitBtn.innerHTML = '<i class="ph ph-circle-notch animate-spin"></i> Sending...';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/reports`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          submitBtn.innerHTML = '<i class="ph ph-check"></i> Submitted!';
+          submitBtn.style.background = '#059669';
+
+          setTimeout(() => {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+            reportForm.reset();
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+            alert('Thank you! Your report has been submitted and is pending review.');
+          }, 1500);
+        } else {
+          throw new Error('Failed to submit report');
+        }
+      } catch (err) {
+        console.error('Report error:', err);
         submitBtn.innerHTML = originalText;
-        submitBtn.style.background = '';
-        alert('Thank you! Your report has been submitted and is pending review.');
-      }, 1500);
+        submitBtn.disabled = false;
+        alert('Failed to submit report. Please try again.');
+      }
     });
   }
 
@@ -227,6 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const dashboardSections = document.querySelectorAll('.dashboard-section');
 
   if (sidebarLinks.length > 0 && dashboardSections.length > 0) {
+    // Load data based on role/dashboard
+    loadReports();
+    loadUsers();
+
     sidebarLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -315,6 +372,116 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
       });
     });
+  }
+
+  async function loadReports() {
+    const reportTableBody = document.querySelector('#reports tbody');
+    if (!reportTableBody) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/reports`);
+      const reports = await response.json();
+
+      const currentUserId = localStorage.getItem('currentUserId');
+      const userRole = localStorage.getItem('userRole');
+
+      // Update Overview Stats
+      const myReports = reports.filter(r => r.reporter?._id === currentUserId);
+      const totalReportsCounter = document.querySelector('.stats-card.stats-primary .counter-value, .chart-card .counter-value[data-target="12"], .chart-card .counter-value[data-target="1248"]');
+      if (totalReportsCounter) {
+        totalReportsCounter.setAttribute('data-target', userRole === 'citizen' ? myReports.length : reports.length);
+        if (typeof animateCounters === 'function') animateCounters(totalReportsCounter.closest('.dashboard-section') || document.body);
+      }
+
+      const resolvedReports = reports.filter(r => r.status === 'resolved' && (r.reporter?._id === currentUserId || userRole !== 'citizen'));
+      const resolvedCounter = document.querySelector('.stats-card.stats-success .counter-value, .chart-card .counter-value[data-target="8"], .chart-card .counter-value[data-target="18"]');
+      if (resolvedCounter) {
+        resolvedCounter.setAttribute('data-target', resolvedReports.length);
+      }
+
+      // Filter reports for the current user if they are a citizen
+      const filteredReports = reports.filter(r => r.reporter?._id === currentUserId || userRole !== 'citizen');
+
+      if (userRole === 'admin') {
+        // Handle Admin Table Structure
+        reportTableBody.innerHTML = filteredReports.map(r => `
+          <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+            <td style="padding: 1.25rem;">
+              <strong>${r.type.charAt(0).toUpperCase() + r.type.slice(1)}</strong><br>
+              <span style="font-size: 0.875rem; color: var(--text-light);">${r.location}</span>
+            </td>
+            <td style="padding: 1.25rem;">${r.reporter?.name || 'Unknown'}</td>
+            <td style="padding: 1.25rem;"><span
+                style="background: #fff7ed; color: #9a3412; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">MEDIUM</span>
+            </td>
+            <td style="padding: 1.25rem;"><span
+                style="color: ${r.status === 'resolved' ? '#10b981' : '#f59e0b'}; font-weight: 600;">
+                ${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span>
+            </td>
+            <td style="padding: 1.25rem;">
+              <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View</button>
+            </td>
+          </tr>
+        `).join('');
+      } else {
+        // Handle Citizen/Volunteer Table Structure
+        reportTableBody.innerHTML = filteredReports.map(r => `
+          <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+            <td style="padding: 1.25rem; font-weight: 600;">#${r.id?.slice(-6).toUpperCase() || 'N/A'}</td>
+            <td style="padding: 1.25rem;">${r.location}</td>
+            <td style="padding: 1.25rem;">${r.type.charAt(0).toUpperCase() + r.type.slice(1)}</td>
+            <td style="padding: 1.25rem;"><span
+                    style="background: ${r.status === 'resolved' ? '#d1fae5' : '#fff7ed'}; 
+                           color: ${r.status === 'resolved' ? '#065f46' : '#9a3412'}; 
+                           padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.875rem; font-weight: 600;">
+                    ${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span>
+            </td>
+            <td style="padding: 1.25rem; color: var(--text-light);">${new Date(r.createdAt).toLocaleDateString()}</td>
+          </tr>
+        `).join('');
+      }
+    } catch (err) {
+      console.error('Failed to load reports:', err);
+    }
+  }
+
+  async function loadUsers() {
+    const userTableBody = document.querySelector('#users tbody');
+    if (!userTableBody) return;
+
+    try {
+      console.log('Fetching users from API...');
+      const response = await fetch(`${API_BASE_URL}/users`);
+      if (!response.ok) throw new Error('Failed to fetch users');
+      const users = await response.json();
+      console.log('Users loaded:', users.length);
+
+      userTableBody.innerHTML = users.map(u => {
+        const initials = u.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        const avatarBg = u.role === 'admin' ? 'var(--primary-color)' : (u.role === 'volunteer' ? '#a855f7' : 'var(--secondary-color)');
+
+        return `
+          <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+            <td style="padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: ${avatarBg}; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem;">
+                ${initials}
+              </div>
+              <div>
+                <div style="font-weight: 600;">${u.name}</div>
+                <div style="font-size: 0.75rem; color: var(--text-light);">${u.email}</div>
+              </div>
+            </td>
+            <td style="padding: 1rem 1.5rem;">
+              <span class="pill pill-${u.role}" style="font-size: 0.75rem; font-weight: 700;">${u.role.toUpperCase()}</span>
+            </td>
+            <td style="padding: 1rem 1.5rem;"><span style="color: #10b981; font-weight: 600;">Active</span></td>
+            <td style="padding: 1rem 1.5rem; color: var(--text-light);">Recent</td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Failed to load users:', err);
+    }
   }
 
   // Global Interactivity for Buttons
