@@ -13,6 +13,63 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        /* === Admin Dashboard Scoped Styles === */
+
+        /* Analytics Grid (2 columns for balance) */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md, 12px);
+            box-shadow: var(--shadow-sm);
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--text-dark);
+            flex-shrink: 0;
+        }
+
+        .chart-card canvas {
+            flex: 1;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Stats Grid Fixes */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .admin-stat-box {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid #e2e8f0;
+        }
+
+        @media (max-width: 992px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -111,21 +168,21 @@
                 <!-- Charts Section -->
                 <section style="margin-bottom: 3.5rem;">
                     <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Analytics Overview</h2>
-                    <div class="chart-grid">
+                    <div class="analytics-grid">
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Reports vs Resolved</h3>
+                            <h3>Reports vs Resolved</h3>
                             <canvas id="adminReportsChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Issue Types</h3>
+                            <h3>Issue Types</h3>
                             <canvas id="adminIssuesChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Budget Allocation</h3>
+                            <h3>Budget Allocation</h3>
                             <canvas id="adminBudgetChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Response Time Heatmap</h3>
+                            <h3>Response Time Heatmap</h3>
                             <canvas id="adminResponseChart"></canvas>
                         </div>
                     </div>

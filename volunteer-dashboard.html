@@ -13,6 +13,233 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        /* === Volunteer Dashboard Scoped Styles === */
+
+        /* Stat Cards Grid */
+        .vol-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .vol-stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md, 12px);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vol-stat-card i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .vol-stat-card h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .vol-stat-card p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Chart Grid */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md, 12px);
+            box-shadow: var(--shadow-sm);
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--text-dark);
+            flex-shrink: 0;
+        }
+
+        .chart-card canvas {
+            flex: 1;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        @media (max-width: 1024px) {
+            .chart-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Section Heading */
+        .vol-section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.15);
+        }
+
+        /* Task Cards Grid */
+        .vol-tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .vol-task-card {
+            background: var(--white);
+            border-radius: var(--radius-lg, 16px);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vol-task-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .vol-task-body {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .vol-task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vol-badge {
+            padding: 0.3rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+
+        .vol-badge-urgent {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .vol-badge-normal {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .vol-task-dist {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .vol-task-body h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .vol-task-body p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            margin: 0;
+            flex: 1;
+        }
+
+        /* Settings Card */
+        .vol-settings-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius-lg, 16px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .vol-setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .vol-setting-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .vol-setting-label h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            color: var(--text-dark);
+        }
+
+        .vol-setting-label p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .vol-toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .vol-toggle-dot {
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            right: 3px;
+            top: 3px;
+        }
+
+        /* Dashboard section consistent spacing */
+        .dashboard-section {
+            padding-bottom: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,12 +249,10 @@
                 <i class="ph-fill ph-drop"></i>
                 CleanWater360
             </a>
-
             <button class="menu-toggle"><i class="ph ph-list"></i></button>
             <ul class="nav-links">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="volunteer-dashboard.html" class="nav-link active">Dashboard</a></li>
-
                 <li><a href="index.html" class="btn btn-outline">Logout</a></li>
                 <li><button class="theme-toggle"><i class="ph-fill ph-moon"></i></button></li>
             </ul>
@@ -61,57 +286,64 @@
 
         <!-- Main Content -->
         <main class="main-content">
+
             <!-- Overview Section -->
             <div id="overview" class="dashboard-section active">
                 <header class="dashboard-header" style="background-image: url('Assets/images/volunteer-hero.jpg');">
                     <div>
-                        <h1 id="welcome-message" style="font-size: 2.5rem; font-weight: 800;">Volunteer Panel</h1>
-                        <p style="font-size: 1.1rem; font-weight: 500;">Active tasks assigned for field verification.
-                        </p>
+                        <h1 id="welcome-message" style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">
+                            Volunteer Panel</h1>
+                        <p style="font-size: 1rem; font-weight: 500; opacity: 0.9;">Active tasks assigned for field
+                            verification.</p>
                     </div>
-                    <div style="display: flex; gap: 1rem;">
+                    <div>
                         <button class="btn btn-primary" data-tab-switch="map">
                             <i class="ph ph-map-pin"></i> View Map
                         </button>
                     </div>
                 </header>
 
-                <!-- Stats Section -->
-                <section style="margin-bottom: 3.5rem;">
-                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Your Weekly Impact</h2>
-                    <ul
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; list-style: none; padding: 0; margin-bottom: 2rem;">
-                        <li
-                            style="background: var(--white); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); text-align: center;">
-                            <i class="ph ph-check-circle"
-                                style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
-                            <h3 class="counter-value" data-target="12" style="font-size: 1.75rem; font-weight: 800;">0
-                            </h3>
+                <!-- Stat Cards -->
+                <section style="margin-bottom: 2.5rem;">
+                    <h2 class="vol-section-title">Your Weekly Impact</h2>
+                    <div class="vol-stats-grid">
+                        <div class="vol-stat-card">
+                            <i class="ph ph-check-circle"></i>
+                            <h3 class="counter-value" data-target="12">0</h3>
+                            <p>Tasks Completed</p>
+                        </div>
+                        <div class="vol-stat-card">
+                            <i class="ph ph-footprints"></i>
+                            <h3 class="counter-value" data-target="24" data-suffix="km">0km</h3>
+                            <p>Area Covered</p>
+                        </div>
+                        <div class="vol-stat-card">
+                            <i class="ph ph-flask"></i>
+                            <h3 class="counter-value" data-target="8">0</h3>
+                            <p>Samples Collected</p>
+                        </div>
+                        <div class="vol-stat-card">
+                            <i class="ph ph-star"></i>
+                            <h3 class="counter-value" data-target="96" data-suffix="%">0%</h3>
+                            <p>Accuracy Rate</p>
+                        </div>
+                    </div>
+                </section>
 
-                            <p style="color: var(--text-light); font-size: 0.9rem;">Tasks Completed</p>
-                        </li>
-                        <li
-                            style="background: var(--white); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); text-align: center;">
-                            <i class="ph ph-footprints"
-                                style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
-                            <h3 class="counter-value" data-target="24" data-suffix="km"
-                                style="font-size: 1.75rem; font-weight: 800;">0km</h3>
-
-                            <p style="color: var(--text-light); font-size: 0.9rem;">Area Covered</p>
-                        </li>
-                    </ul>
-
+                <!-- Charts -->
+                <section style="margin-bottom: 2.5rem;">
+                    <h2 class="vol-section-title">Performance Charts</h2>
                     <div class="chart-grid">
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Task Completion Trend</h3>
+                            <h3>Task Completion Trend</h3>
                             <canvas id="volunteerTasksChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Distance Covered (km)</h3>
+                            <h3>Distance Covered (km)</h3>
                             <canvas id="volunteerDistanceChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Equipment Readiness</h3>
+                            <h3>Equipment Readiness</h3>
                             <canvas id="volunteerEquipmentChart"></canvas>
                         </div>
                     </div>
@@ -120,47 +352,30 @@
 
             <!-- Tasks Section -->
             <div id="tasks" class="dashboard-section">
-                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Assigned Field Tasks</h2>
-                <div class="feature-grid"
-                    style="margin-top: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div class="feature-card" style="border-top: 4px solid #dc2626;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.25rem;">
-                            <span
-                                style="background: #fee2e2; color: #991b1b; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.75rem; font-weight: 800;">URGENT</span>
-                            <span style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">2.4km
-                                away</span>
-                        </div>
-                        <img src="Assets/images/cleanup-action.jpg" alt="Chemical Dump"
-                            style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 1rem;">
-                        <h3 style="margin-bottom: 0.75rem; font-size: 1.25rem;">Suspected Chemical Dump</h3>
-                        <p
-                            style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;">
-                            <strong>Location:</strong> East River Bank<br>
-                            <strong>Ref:</strong> #CW-TRX-942
-                        </p>
-                        <div style="display: flex; gap: 0.75rem;">
-                            <button class="btn btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem;">Verify
-                                Now</button>
+                <h2 class="vol-section-title">Assigned Field Tasks</h2>
+                <div class="vol-tasks-grid">
+                    <div class="vol-task-card" style="border-top: 4px solid #dc2626;">
+                        <img src="Assets/images/cleanup-action.jpg" alt="Chemical Dump">
+                        <div class="vol-task-body">
+                            <div class="vol-task-meta">
+                                <span class="vol-badge vol-badge-urgent">URGENT</span>
+                                <span class="vol-task-dist">2.4 km away</span>
+                            </div>
+                            <h3>Suspected Chemical Dump</h3>
+                            <p><strong>Location:</strong> East River Bank<br><strong>Ref:</strong> #CW-TRX-942</p>
+                            <button class="btn btn-primary" style="width: 100%;">Verify Now</button>
                         </div>
                     </div>
-                    <div class="feature-card" style="border-top: 4px solid #f59e0b;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.25rem;">
-                            <span
-                                style="background: #fff7ed; color: #9a3412; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.75rem; font-weight: 800;">NORMAL</span>
-                            <span style="color: var(--text-light); font-size: 0.875rem; font-weight: 600;">1.2km
-                                away</span>
-                        </div>
-                        <img src="Assets/images/water-sampling.jpg" alt="Pipe Leak"
-                            style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 1rem;">
-                        <h3 style="margin-bottom: 0.75rem; font-size: 1.25rem;">Main Pipe Inspection</h3>
-                        <p
-                            style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;">
-                            <strong>Location:</strong> Westside Park Area<br>
-                            <strong>Ref:</strong> #CW-TRX-810
-                        </p>
-                        <div style="display: flex; gap: 0.75rem;">
-                            <button class="btn btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem;">Accept
-                                Task</button>
+                    <div class="vol-task-card" style="border-top: 4px solid #f59e0b;">
+                        <img src="Assets/images/water-sampling.jpg" alt="Pipe Inspection">
+                        <div class="vol-task-body">
+                            <div class="vol-task-meta">
+                                <span class="vol-badge vol-badge-normal">NORMAL</span>
+                                <span class="vol-task-dist">1.2 km away</span>
+                            </div>
+                            <h3>Main Pipe Inspection</h3>
+                            <p><strong>Location:</strong> Westside Park Area<br><strong>Ref:</strong> #CW-TRX-810</p>
+                            <button class="btn btn-primary" style="width: 100%;">Accept Task</button>
                         </div>
                     </div>
                 </div>
@@ -168,89 +383,71 @@
 
             <!-- Map View Section -->
             <div id="map" class="dashboard-section">
-                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Field Map</h2>
+                <h2 class="vol-section-title">Field Map</h2>
                 <div class="map-container" id="volunteerMap"></div>
             </div>
 
             <!-- History Section -->
             <div id="history" class="dashboard-section">
-                <section style="margin-bottom: 4rem;">
-                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Monthly Volunteering Impact</h2>
-                    <div class="chart-grid">
-                        <div class="chart-card">
-                            <h3 style="margin-bottom: 1.5rem; font-size: 1rem;">Community Verifications</h3>
-                            <canvas id="volunteerImpactChart"></canvas>
-                        </div>
+                <h2 class="vol-section-title">Monthly Volunteering Impact</h2>
+                <div class="chart-grid" style="grid-template-columns: 1fr;">
+                    <div class="chart-card">
+                        <h3>Community Verifications</h3>
+                        <canvas id="volunteerImpactChart"></canvas>
                     </div>
-                    <div
-                        style="background: var(--white); padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-top: 2rem;">
-                        <p style="color: var(--text-light); line-height: 1.6;">You've participated in <strong>8
-                                community cleanups</strong> and verified <strong>32 reports</strong> this year. Your
-                            dedication has helped maintain 100% water security in your district.</p>
-                    </div>
-                </section>
+                </div>
+                <div
+                    style="background: var(--white); padding: 2rem; border-radius: var(--radius-lg, 16px); box-shadow: var(--shadow-sm); margin-top: 1.5rem; line-height: 1.7; color: var(--text-light);">
+                    You've participated in <strong style="color: var(--text-dark);">8 community cleanups</strong> and
+                    verified
+                    <strong style="color: var(--text-dark);">32 reports</strong> this year. Your dedication has helped
+                    maintain
+                    <strong style="color: var(--text-dark);">100% water security</strong> in your district.
+                </div>
             </div>
 
             <!-- Settings Section -->
             <div id="settings" class="dashboard-section">
-                <section style="margin-bottom: 4rem;">
-                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Volunteer Preferences</h2>
-                    <div
-                        style="background: var(--white); padding: 3rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
-                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <h4 style="margin-bottom: 0.25rem;">Active Availability</h4>
-                                    <p style="font-size: 0.875rem; color: var(--text-light);">Show yourself as 'Online'
-                                        for emergency tasks.</p>
-                                </div>
-                                <div
-                                    style="width: 44px; height: 24px; background: #10b981; border-radius: 12px; position: relative; cursor: pointer;">
-                                    <div
-                                        style="width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; right: 3px; top: 3px;">
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1.5rem;">
-                                <div>
-                                    <h4 style="margin-bottom: 0.25rem;">Proximity Alerts</h4>
-                                    <p style="font-size: 0.875rem; color: var(--text-light);">Notify me of tasks within
-                                        5km radius.</p>
-                                </div>
-                                <div
-                                    style="width: 44px; height: 24px; background: var(--primary-color); border-radius: 12px; position: relative; cursor: pointer;">
-                                    <div
-                                        style="width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; right: 3px; top: 3px;">
-                                    </div>
-                                </div>
-                            </div>
+                <h2 class="vol-section-title">Volunteer Preferences</h2>
+                <div class="vol-settings-card">
+                    <div class="vol-setting-row">
+                        <div class="vol-setting-label">
+                            <h4>Active Availability</h4>
+                            <p>Show yourself as 'Online' for emergency tasks.</p>
                         </div>
-                        <button class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Update
-                            Availability</button>
+                        <div class="vol-toggle" style="background: #10b981;">
+                            <div class="vol-toggle-dot"></div>
+                        </div>
                     </div>
-                </section>
+                    <div class="vol-setting-row">
+                        <div class="vol-setting-label">
+                            <h4>Proximity Alerts</h4>
+                            <p>Notify me of tasks within 5km radius.</p>
+                        </div>
+                        <div class="vol-toggle" style="background: var(--primary-color);">
+                            <div class="vol-toggle-dot"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Update
+                        Availability</button>
+                </div>
             </div>
 
-            <!-- Social Links Section -->
-            <section style="padding: 3rem 1.5rem; background: var(--bg-light); border-top: 1px solid rgba(0,0,0,0.05);">
-                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 3rem; align-items: center;">
-                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
-                        <i class="ph-fill ph-facebook-logo" style="font-size: 2.5rem;"></i>
-                    </a>
-                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
-                        <i class="ph-fill ph-twitter-logo" style="font-size: 2.5rem;"></i>
-                    </a>
-                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
-                        <i class="ph-fill ph-instagram-logo" style="font-size: 2.5rem;"></i>
-                    </a>
-                    <a href="#" class="social-link" style="color: var(--secondary-color); transition: transform 0.3s;">
-                        <i class="ph-fill ph-linkedin-logo" style="font-size: 2.5rem;"></i>
-                    </a>
+            <!-- Social Links -->
+            <section style="padding: 2.5rem 0; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 2rem;">
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2.5rem; align-items: center;">
+                    <a href="#" class="social-link" style="color: var(--secondary-color);"><i
+                            class="ph-fill ph-facebook-logo" style="font-size: 2.5rem;"></i></a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color);"><i
+                            class="ph-fill ph-twitter-logo" style="font-size: 2.5rem;"></i></a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color);"><i
+                            class="ph-fill ph-instagram-logo" style="font-size: 2.5rem;"></i></a>
+                    <a href="#" class="social-link" style="color: var(--secondary-color);"><i
+                            class="ph-fill ph-linkedin-logo" style="font-size: 2.5rem;"></i></a>
                 </div>
             </section>
 
-            <!-- Standardized Footer -->
+            <!-- Footer -->
             <footer class="footer" style="margin-top: auto;">
                 <div class="footer-grid">
                     <div class="footer-col">

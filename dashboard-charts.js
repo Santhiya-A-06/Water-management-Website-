@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const commonOptions = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'bottom',

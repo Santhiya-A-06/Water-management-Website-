@@ -23,7 +23,6 @@
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="login.html" class="nav-link">Back to Roles</a></li>
-                <li><button class="theme-toggle"><i class="ph-fill ph-moon"></i></button></li>
             </ul>
         </div>
     </nav>
@@ -40,14 +39,18 @@
             </div>
 
             <!-- Login Form (Admin usually doesn't self-register easily) -->
-            <form id="login-form" class="auth-form active" style="display: block;">
+            <form id="login-form" class="auth-form active" style="display: block;" action="admin-dashboard.html">
                 <div class="form-group">
-                    <label class="form-label">Admin Email</label>
-                    <input type="email" name="email" class="form-input" placeholder="admin@cleanwater360.org" required>
+                    <label class="form-label">Employee ID</label>
+                    <input type="text" class="form-input" placeholder="EMP-0000" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                    <input type="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Security Code</label>
+                    <input type="password" class="form-input" placeholder="Auth Code" required>
                 </div>
                 <button type="submit" class="btn btn-primary"
                     style="width: 100%; background: linear-gradient(135deg, #dc2626, #ef4444);">Access Console</button>
@@ -90,7 +93,6 @@
     </footer>
 
     <script src="script.js"></script>
-    <script src="rain.js"></script>
 </body>
 
 </html>

@@ -13,6 +13,75 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        /* === Citizen Dashboard Scoped Styles === */
+
+        /* Stats Grid (Top) */
+        .stats-overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Community Insights Grid */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md, 12px);
+            box-shadow: var(--shadow-sm);
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--text-dark);
+            flex-shrink: 0;
+        }
+
+        .chart-card canvas {
+            flex: 1;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        @media (max-width: 992px) {
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Pill styling for top stats */
+        .stat-pill-box {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md, 12px);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .pill-icon-container {
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -74,52 +143,51 @@
                 </header>
 
                 <!-- Statistics Grid -->
-                <div class="chart-grid" style="margin-bottom: 3.5rem;">
-                    <div class="chart-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
-                        <div class="pill pill-citizen"
-                            style="padding: 1rem; border-radius: 12px; background: rgba(14, 165, 233, 0.1);">
-                            <i class="ph ph-file-text" style="font-size: 2rem;"></i>
+                <div class="stats-overview-grid">
+                    <div class="stat-pill-box">
+                        <div class="pill-icon-container" style="background: rgba(14, 165, 233, 0.1);">
+                            <i class="ph ph-file-text" style="font-size: 2rem; color: var(--primary-color);"></i>
                         </div>
                         <div>
                             <p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.25rem;">Total
                                 Reports</p>
-                            <h3 class="counter-value" data-target="12" style="font-size: 1.75rem; font-weight: 800;">0
-                            </h3>
+                            <h3 class="counter-value" data-target="12"
+                                style="font-size: 1.75rem; font-weight: 800; margin: 0;">0</h3>
                         </div>
                     </div>
-                    <div class="chart-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
-                        <div class="pill pill-volunteer"
-                            style="padding: 1rem; border-radius: 12px; background: rgba(16, 185, 129, 0.1);">
-                            <i class="ph ph-check-circle" style="font-size: 2rem;"></i>
+                    <div class="stat-pill-box">
+                        <div class="pill-icon-container" style="background: rgba(16, 185, 129, 0.1);">
+                            <i class="ph ph-check-circle" style="font-size: 2rem; color: #10b981;"></i>
                         </div>
                         <div>
                             <p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.25rem;">Resolved
                             </p>
-                            <h3 class="counter-value" data-target="8" style="font-size: 1.75rem; font-weight: 800;">0
-                            </h3>
+                            <h3 class="counter-value" data-target="8"
+                                style="font-size: 1.75rem; font-weight: 800; margin: 0;">0</h3>
                         </div>
                     </div>
 
-                    <div class="chart-card">
-                        <div class="pill-accent"
-                            style="padding: 1rem; border-radius: 12px; background: rgba(168, 85, 247, 0.1);">
-                            <i class="ph ph-trend-up" style="font-size: 2rem;"></i>
+                    <div class="stat-pill-box">
+                        <div class="pill-icon-container" style="background: rgba(168, 85, 247, 0.1);">
+                            <i class="ph ph-trend-up" style="font-size: 2rem; color: #a855f7;"></i>
                         </div>
                         <div>
-                            <p class="stats-label">Impact Score</p>
-                            <h3 class="counter-value" data-target="85" data-suffix="%">0%</h3>
+                            <p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.25rem;">Impact
+                                Score</p>
+                            <h3 class="counter-value" data-target="85" data-suffix="%"
+                                style="font-size: 1.75rem; font-weight: 800; margin: 0;">0%</h3>
                         </div>
                     </div>
 
-                    <div class="chart-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
-                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 12px;">
+                    <div class="stat-pill-box">
+                        <div class="pill-icon-container" style="background: rgba(245, 158, 11, 0.1);">
                             <i class="ph ph-gift" style="font-size: 2rem; color: #f59e0b;"></i>
                         </div>
                         <div>
                             <p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.25rem;">Reward
                                 Points</p>
-                            <h3 class="counter-value" data-target="1250" style="font-size: 1.75rem; font-weight: 800;">0
-                            </h3>
+                            <h3 class="counter-value" data-target="1250"
+                                style="font-size: 1.75rem; font-weight: 800; margin: 0;">0</h3>
                         </div>
                     </div>
                 </div>
@@ -144,21 +212,21 @@
                 <!-- Charts Section -->
                 <section style="margin-bottom: 3.5rem;">
                     <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Community Insights</h2>
-                    <div class="chart-grid">
+                    <div class="insights-grid">
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Reports Overview</h3>
+                            <h3>Reports Overview</h3>
                             <canvas id="citizenReportsChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Status Distribution</h3>
+                            <h3>Status Distribution</h3>
                             <canvas id="citizenStatusChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Water Quality Trend</h3>
+                            <h3>Water Quality Trend</h3>
                             <canvas id="citizenQualityChart"></canvas>
                         </div>
                         <div class="chart-card">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">My Contribution Radar</h3>
+                            <h3>My Contribution Radar</h3>
                             <canvas id="citizenActivityChart"></canvas>
                         </div>
                     </div>
@@ -368,7 +436,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Issue Type</label>
-                    <select name="type" class="form-input" required>
+                    <select name="issue" class="form-input" required>
                         <option value="">Select an issue</option>
                         <option value="leakage">Water Leakage</option>
                         <option value="pollution">Water Pollution</option>

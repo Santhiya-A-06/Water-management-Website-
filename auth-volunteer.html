@@ -23,7 +23,6 @@
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="login.html" class="nav-link">Back to Roles</a></li>
-                <li><button class="theme-toggle"><i class="ph-fill ph-moon"></i></button></li>
             </ul>
         </div>
     </nav>
@@ -45,33 +44,41 @@
             </div>
 
             <!-- Login Form -->
-            <form id="login-form" class="auth-form active">
+            <form id="login-form" class="auth-form active" action="volunteer-dashboard.html">
                 <div class="form-group">
-                    <label class="form-label">Volunteer Email</label>
-                    <input type="email" name="email" class="form-input" placeholder="you@example.com" required>
+                    <label class="form-label">Volunteer ID / Email</label>
+                    <input type="text" class="form-input" placeholder="ID-1234 or email" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                    <input type="password" class="form-input" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn btn-primary"
                     style="width: 100%; background: linear-gradient(135deg, #059669, #10b981);">Sign In</button>
             </form>
 
             <!-- Register Form -->
-            <form id="register-form" class="auth-form">
-                <input type="hidden" name="role" value="volunteer">
+            <form id="register-form" class="auth-form" action="volunteer-dashboard.html">
                 <div class="form-group">
                     <label class="form-label">Full Name</label>
-                    <input type="text" name="name" class="form-input" placeholder="Jane Doe" required>
+                    <input type="text" class="form-input" placeholder="Jane Doe" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
-                    <input type="email" name="email" class="form-input" placeholder="you@example.com" required>
+                    <input type="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Skills / Expertise</label>
+                    <select class="form-input">
+                        <option>General Support</option>
+                        <option>Water Testing Specialist</option>
+                        <option>Cleanup Crew</option>
+                        <option>Driver</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-input" placeholder="Create a password" required>
+                    <input type="password" class="form-input" placeholder="Create a password" required>
                 </div>
                 <button type="submit" class="btn btn-primary"
                     style="width: 100%; background: linear-gradient(135deg, #059669, #10b981);">Register as
@@ -111,7 +118,6 @@
     </footer>
 
     <script src="script.js"></script>
-    <script src="rain.js"></script>
 </body>
 
 </html>
