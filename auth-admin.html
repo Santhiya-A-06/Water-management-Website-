@@ -38,19 +38,19 @@
                 <p class="auth-desc">Restricted access only.</p>
             </div>
 
-            <!-- Login Form (Admin usually doesn't self-register easily) -->
-            <form id="login-form" class="auth-form active" style="display: block;" action="admin-dashboard.html">
+            <!-- Login Form (Admin only - no self-registration) -->
+            <form id="login-form" class="auth-form active" style="display: block;" data-role="admin"
+                data-action="login">
                 <div class="form-group">
-                    <label class="form-label">Employee ID</label>
-                    <input type="text" class="form-input" placeholder="EMP-0000" required>
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="admin-login-email" class="form-input" placeholder="admin@cleanwater360.org"
+                        required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" placeholder="••••••••" required>
+                    <input type="password" id="admin-login-password" class="form-input" placeholder="••••••••" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Security Code</label>
-                    <input type="password" class="form-input" placeholder="Auth Code" required>
+                <div id="admin-login-error" style="color:#ef4444;font-size:0.875rem;margin-bottom:0.5rem;display:none;">
                 </div>
                 <button type="submit" class="btn btn-primary"
                     style="width: 100%; background: linear-gradient(135deg, #dc2626, #ef4444);">Access Console</button>

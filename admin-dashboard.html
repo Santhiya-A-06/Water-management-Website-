@@ -226,44 +226,10 @@
                                         <th style="padding: 1rem 1.5rem;">Joined</th>
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: 0.9rem;">
-                                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                        <td
-                                            style="padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                                            <div
-                                                style="width: 32px; height: 32px; border-radius: 50%; background: var(--secondary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
-                                                JD</div>
-                                            <div>
-                                                <div style="font-weight: 600;">John Doe</div>
-                                                <div style="font-size: 0.75rem; color: var(--text-light);">
-                                                    john@example.com</div>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 1rem 1.5rem;"><span
-                                                style="background: var(--pill-citizen-bg); color: var(--pill-citizen-text); padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">CITIZEN</span>
-                                        </td>
-                                        <td style="padding: 1rem 1.5rem;"><span style="color: #10b981;">Active</span>
-                                        </td>
-                                        <td style="padding: 1rem 1.5rem;">Jan 12, 2026</td>
-                                    </tr>
-                                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                        <td
-                                            style="padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                                            <div
-                                                style="width: 32px; height: 32px; border-radius: 50%; background: #a855f7; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
-                                                AS</div>
-                                            <div>
-                                                <div style="font-weight: 600;">Alice Smith</div>
-                                                <div style="font-size: 0.75rem; color: var(--text-light);">
-                                                    alice@field.org</div>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 1rem 1.5rem;"><span
-                                                style="background: var(--pill-volunteer-bg); color: var(--pill-volunteer-text); padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">VOLUNTEER</span>
-                                        </td>
-                                        <td style="padding: 1rem 1.5rem;"><span style="color: #10b981;">Active</span>
-                                        </td>
-                                        <td style="padding: 1rem 1.5rem;">Feb 05, 2026</td>
+                                <tbody id="adminUsersTableBody" style="font-size: 0.9rem;">
+                                    <tr>
+                                        <td colspan="4" style="padding:2rem;text-align:center;color:var(--text-light);">
+                                            Loading users...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -353,61 +319,10 @@
                                     <th style="padding: 1.25rem;">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                    <td style="padding: 1.25rem;">
-                                        <strong>Discolored Water</strong><br>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Downtown Area -
-                                            Zone
-                                            4</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;">Jane Doe</td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="background: #fee2e2; color: #991b1b; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">CRITICAL</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="color: #f59e0b; font-weight: 600;">Pending</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;">
-                                        <button class="btn btn-primary"
-                                            style="padding: 0.5rem 1rem; font-size: 0.875rem;">Assign</button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                    <td style="padding: 1.25rem;">
-                                        <strong>Broken Hydrant</strong><br>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Westside
-                                            Park</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;">John Smith</td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="background: #fff7ed; color: #9a3412; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">HIGH</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="color: #f59e0b; font-weight: 600;">Pending</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;">
-                                        <button class="btn btn-primary"
-                                            style="padding: 0.5rem 1rem; font-size: 0.875rem;">Assign</button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                    <td style="padding: 1.25rem;">
-                                        <strong>Low Pressure</strong><br>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Uptown
-                                            Residency</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;">Mike Ross</td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="background: #d1fae5; color: #065f46; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">LOW</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;"><span style="color: #10b981; font-weight: 600;">In
-                                            Progress</span>
-                                    </td>
-                                    <td style="padding: 1.25rem;">
-                                        <button class="btn btn-outline"
-                                            style="padding: 0.5rem 1rem; font-size: 0.875rem;">Details</button>
-                                    </td>
+                            <tbody id="adminReportsTableBody">
+                                <tr>
+                                    <td colspan="5" style="padding:2rem;text-align:center;color:var(--text-light);">
+                                        Loading reports...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -537,6 +452,106 @@
 
     <script src="script.js"></script>
     <script src="dashboard-charts.js"></script>
+    <script>
+        const API = 'http://localhost:5000/api';
+        const token = localStorage.getItem('token');
+
+        // Role pill colours
+        const rolePill = {
+            citizen: 'background:#dbeafe;color:#1e40af;',
+            volunteer: 'background:#d1fae5;color:#065f46;',
+            admin: 'background:#fee2e2;color:#991b1b;',
+        };
+        const statusColors = {
+            pending: 'background:#fef9c3;color:#854d0e;',
+            investigating: 'background:#fff7ed;color:#9a3412;',
+            resolved: 'background:#d1fae5;color:#065f46;',
+        };
+
+        // ── Load Users ──────────────────────────────────────────
+        async function loadAdminUsers() {
+            const tbody = document.getElementById('adminUsersTableBody');
+            if (!token) { tbody.innerHTML = '<tr><td colspan="4" style="padding:2rem;text-align:center;color:#ef4444;">Not logged in as admin.</td></tr>'; return; }
+            try {
+                const res = await fetch(`${API}/users/all`, { headers: { Authorization: `Bearer ${token}` } });
+                const users = await res.json();
+                if (!Array.isArray(users) || !users.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="padding:2rem;text-align:center;color:var(--text-light);">No users found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = users.map(u => {
+                    const initials = u.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                    const colors = ['#0ea5e9', '#a855f7', '#f59e0b', '#10b981', '#ef4444'];
+                    const bg = colors[u.name.charCodeAt(0) % colors.length];
+                    const date = new Date(u.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    const pill = rolePill[u.role] || rolePill.citizen;
+                    return `<tr style="border-bottom:1px solid rgba(0,0,0,0.05);">
+              <td style="padding:1rem 1.5rem;display:flex;align-items:center;gap:0.75rem;">
+                <div style="width:32px;height:32px;border-radius:50%;background:${bg};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">${initials}</div>
+                <div><div style="font-weight:600;">${u.name}</div><div style="font-size:0.75rem;color:var(--text-light);">${u.email}</div></div>
+              </td>
+              <td style="padding:1rem 1.5rem;"><span style="${pill}padding:0.2rem 0.6rem;border-radius:4px;font-weight:700;font-size:0.75rem;">${u.role.toUpperCase()}</span></td>
+              <td style="padding:1rem 1.5rem;"><span style="color:#10b981;font-weight:600;">Active</span></td>
+              <td style="padding:1rem 1.5rem;">${date}</td>
+            </tr>`;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="padding:2rem;text-align:center;color:#ef4444;">Failed to load. Is the server running?</td></tr>';
+            }
+        }
+
+        // ── Load Reports ─────────────────────────────────────────
+        async function loadAdminReports() {
+            const tbody = document.getElementById('adminReportsTableBody');
+            if (!token) { tbody.innerHTML = '<tr><td colspan="5" style="padding:2rem;text-align:center;color:#ef4444;">Not logged in as admin.</td></tr>'; return; }
+            try {
+                const res = await fetch(`${API}/reports/all`, { headers: { Authorization: `Bearer ${token}` } });
+                const reports = await res.json();
+                if (!Array.isArray(reports) || !reports.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-light);">No reports submitted yet.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = reports.map(r => {
+                    const sc = statusColors[r.status] || statusColors.pending;
+                    const date = new Date(r.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    const issue = r.issue.charAt(0).toUpperCase() + r.issue.slice(1);
+                    const status = r.status.charAt(0).toUpperCase() + r.status.slice(1);
+                    return `<tr style="border-bottom:1px solid rgba(0,0,0,0.05);">
+              <td style="padding:1.25rem;"><strong>${issue}</strong><br><span style="font-size:0.875rem;color:var(--text-light);">${r.location}</span></td>
+              <td style="padding:1.25rem;">${r.citizenName || '—'}</td>
+              <td style="padding:1.25rem;color:var(--text-light);font-size:0.875rem;">${date}</td>
+              <td style="padding:1.25rem;"><span style="${sc}padding:0.25rem 0.75rem;border-radius:4px;font-weight:700;font-size:0.75rem;">${status}</span></td>
+              <td style="padding:1.25rem;">
+                <button onclick="updateStatus('${r._id}','resolved',this)" class="btn btn-primary" style="padding:0.4rem 0.8rem;font-size:0.8rem;">✅ Resolve</button>
+                <button onclick="updateStatus('${r._id}','investigating',this)" class="btn btn-outline" style="padding:0.4rem 0.8rem;font-size:0.8rem;margin-left:4px;">🔍 Investigate</button>
+              </td>
+            </tr>`;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5" style="padding:2rem;text-align:center;color:#ef4444;">Failed to load. Is the server running?</td></tr>';
+            }
+        }
+
+        // ── Update Report Status ─────────────────────────────────
+        async function updateStatus(id, status, btn) {
+            btn.disabled = true;
+            try {
+                await fetch(`${API}/reports/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ status }),
+                });
+                loadAdminReports();
+            } catch (e) { btn.disabled = false; }
+        }
+
+        // ── Load on page / tab switch ─────────────────────────────
+        loadAdminUsers();
+        loadAdminReports();
+
+        document.querySelectorAll('.sidebar-link[data-tab="users"]').forEach(l => l.addEventListener('click', loadAdminUsers));
+        document.querySelectorAll('.sidebar-link[data-tab="reports"]').forEach(l => l.addEventListener('click', loadAdminReports));
+    </script>
 </body>
 
 </html>

@@ -148,33 +148,119 @@ document.addEventListener('DOMContentLoaded', () => {
 
   scrollElements.forEach(el => scrollObserver.observe(el));
 
-  // User Personalization Logic
-  // 1. Capture Name on Login/Register
-  const authForms = document.querySelectorAll('.auth-form');
+
+  // =====================================================
+  // MONGODB API AUTH LOGIC
+  // =====================================================
+  const API_BASE = 'http://localhost:5000/api';
+
+  // Dashboard redirects per role
+  const DASHBOARD_MAP = {
+    citizen: 'citizen-dashboard.html',
+    volunteer: 'volunteer-dashboard.html',
+    admin: 'admin-dashboard.html',
+  };
+
+  const authForms = document.querySelectorAll('.auth-form[data-action]');
   authForms.forEach(form => {
-    form.addEventListener('submit', (e) => {
-      let nameInput = form.querySelector('input[type="text"]');
-      let userName = "User";
-      if (nameInput && nameInput.value) {
-        userName = nameInput.value;
-      } else {
-        const emailInput = form.querySelector('input[type="email"]');
-        if (emailInput && emailInput.value) {
-          userName = emailInput.value.split('@')[0];
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const role = form.getAttribute('data-role');     // citizen | volunteer | admin
+      const action = form.getAttribute('data-action'); // login | register
+
+      // Determine error div
+      const prefix = role + '-' + action;
+      const errorDiv = document.getElementById(prefix + '-error');
+      if (errorDiv) { errorDiv.style.display = 'none'; errorDiv.textContent = ''; }
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="ph ph-spinner"></i> Please wait...';
+      submitBtn.disabled = true;
+
+      try {
+        let url, body;
+
+        if (action === 'register') {
+          const nameEl = document.getElementById(`${role}-register-name`);
+          const emailEl = document.getElementById(`${role}-register-email`);
+          const passEl = document.getElementById(`${role}-register-password`);
+          const locationEl = document.getElementById(`${role}-register-location`);
+          const skillsEl = document.getElementById(`${role}-register-skills`);
+
+          url = `${API_BASE}/auth/register`;
+          body = {
+            name: nameEl ? nameEl.value : '',
+            email: emailEl ? emailEl.value : '',
+            password: passEl ? passEl.value : '',
+            role,
+            location: locationEl ? locationEl.value : '',
+            skills: skillsEl ? skillsEl.value : '',
+          };
+        } else {
+          // login
+          const emailEl = document.getElementById(`${role}-login-email`);
+          const passEl = document.getElementById(`${role}-login-password`);
+
+          url = `${API_BASE}/auth/login`;
+          body = {
+            email: emailEl ? emailEl.value : '',
+            password: passEl ? passEl.value : '',
+            role,
+          };
         }
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (errorDiv) {
+            errorDiv.textContent = data.message || 'Something went wrong.';
+            errorDiv.style.display = 'block';
+          }
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          return;
+        }
+
+        // Success — store token and user info
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('currentUser', data.user.name);
+        localStorage.setItem('currentUserRole', data.user.role);
+        localStorage.setItem('currentUserId', data.user.id);
+
+        submitBtn.innerHTML = '<i class="ph ph-check"></i> Success!';
+        setTimeout(() => {
+          window.location.href = DASHBOARD_MAP[data.user.role] || 'index.html';
+        }, 800);
+
+      } catch (err) {
+        console.error('Auth error:', err);
+        if (errorDiv) {
+          errorDiv.textContent = 'Cannot reach server. Make sure the backend is running on port 5000.';
+          errorDiv.style.display = 'block';
+        }
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
       }
-      localStorage.setItem('currentUser', userName);
     });
   });
 
-  // 2. Display Name on Dashboard
+  // Display Name on Dashboard
   const welcomeMsg = document.querySelector('#welcome-message');
   if (welcomeMsg) {
     const storedName = localStorage.getItem('currentUser');
     if (storedName) {
-      welcomeMsg.textContent = welcomeMsg.textContent.includes('!') ? `Welcome, ${storedName}!` : `Welcome, ${storedName}!`;
+      welcomeMsg.textContent = `Welcome, ${storedName}!`;
     }
   }
+
 
   // Modal Logic for "New Report"
   const openModalBtn = document.querySelector('[data-open-modal]');
@@ -204,21 +290,65 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (reportForm) {
-    reportForm.addEventListener('submit', (e) => {
+    reportForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = reportForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<i class="ph ph-check"></i> Submitted!';
-      submitBtn.style.background = '#059669';
 
-      setTimeout(() => {
-        modalOverlay.style.display = 'none';
-        document.body.style.overflow = '';
-        reportForm.reset();
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please log in first to submit a report.');
+        return;
+      }
+
+      submitBtn.innerHTML = '<i class="ph ph-spinner"></i> Submitting...';
+      submitBtn.disabled = true;
+
+      const formData = new FormData(reportForm);
+      const body = {
+        location: formData.get('location'),
+        issue: formData.get('issue'),
+        description: formData.get('description'),
+      };
+
+      try {
+        const res = await fetch('http://localhost:5000/api/reports', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.message || 'Failed to submit report.');
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          return;
+        }
+
+        submitBtn.innerHTML = '<i class="ph ph-check"></i> Submitted!';
+        submitBtn.style.background = '#059669';
+
+        setTimeout(() => {
+          modalOverlay.style.display = 'none';
+          document.body.style.overflow = '';
+          reportForm.reset();
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.background = '';
+          submitBtn.disabled = false;
+          alert('✅ Your report has been saved to the database and is pending review!');
+        }, 1500);
+
+      } catch (err) {
+        console.error('Report submit error:', err);
+        alert('Cannot reach server. Make sure the backend is running on port 5000.');
         submitBtn.innerHTML = originalText;
-        submitBtn.style.background = '';
-        alert('Thank you! Your report has been submitted and is pending review.');
-      }, 1500);
+        submitBtn.disabled = false;
+      }
     });
   }
 

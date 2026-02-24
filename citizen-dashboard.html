@@ -239,7 +239,7 @@
                     <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Report Locations</h2>
                     <div class="map-container" id="reportsMap"></div>
 
-                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">My Activity History</h2>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; margin-top: 2rem;">My Activity History</h2>
                     <div
                         style="background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow-x: auto; border: 1px solid rgba(0,0,0,0.05);">
                         <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
@@ -252,30 +252,19 @@
                                     <th style="padding: 1.25rem;">Date</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                    <td style="padding: 1.25rem; font-weight: 600;">#CW-2024-001</td>
-                                    <td style="padding: 1.25rem;">North Bridge Park</td>
-                                    <td style="padding: 1.25rem;">Oil Sheen</td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="background: #d1fae5; color: #065f46; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.875rem; font-weight: 600;">Resolved</span>
+                            <tbody id="myReportsTableBody">
+                                <tr>
+                                    <td colspan="5"
+                                        style="padding: 2rem; text-align: center; color: var(--text-light);">
+                                        <i class="ph ph-spinner" style="font-size: 1.5rem;"></i> Loading reports...
                                     </td>
-                                    <td style="padding: 1.25rem; color: var(--text-light);">Oct 24, 2024</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                                    <td style="padding: 1.25rem; font-weight: 600;">#CW-2024-045</td>
-                                    <td style="padding: 1.25rem;">Main St. Pipe</td>
-                                    <td style="padding: 1.25rem;">Leakage</td>
-                                    <td style="padding: 1.25rem;"><span
-                                            style="background: #fff7ed; color: #9a3412; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.875rem; font-weight: 600;">Investigating</span>
-                                    </td>
-                                    <td style="padding: 1.25rem; color: var(--text-light);">Feb 14, 2025</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
             </div>
+
 
             <!-- Alerts Section -->
             <div id="alerts" class="dashboard-section">
@@ -463,6 +452,74 @@
 
     <script src="script.js"></script>
     <script src="dashboard-charts.js"></script>
+    <script>
+        // Fetch and display the logged-in citizen's reports from MongoDB
+        const statusColors = {
+            pending: { bg: '#fef9c3', color: '#854d0e' },
+            investigating: { bg: '#fff7ed', color: '#9a3412' },
+            resolved: { bg: '#d1fae5', color: '#065f46' },
+        };
+
+        async function loadMyReports() {
+            const tbody = document.getElementById('myReportsTableBody');
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-light);">Please log in to see your reports.</td></tr>`;
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:5000/api/reports/my', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const reports = await res.json();
+
+                if (!reports.length) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-light);">No reports yet. Click "New Report" to submit one!</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = reports.map((r, i) => {
+                    const s = statusColors[r.status] || statusColors.pending;
+                    const date = new Date(r.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    const id = '#CW-' + r._id.slice(-6).toUpperCase();
+                    const issue = r.issue.charAt(0).toUpperCase() + r.issue.slice(1);
+                    const status = r.status.charAt(0).toUpperCase() + r.status.slice(1);
+                    return `
+              <tr style="border-bottom:1px solid rgba(0,0,0,0.05);">
+                <td style="padding:1.25rem;font-weight:600;">${id}</td>
+                <td style="padding:1.25rem;">${r.location}</td>
+                <td style="padding:1.25rem;">${issue}</td>
+                <td style="padding:1.25rem;">
+                  <span style="background:${s.bg};color:${s.color};padding:0.35rem 0.85rem;border-radius:99px;font-size:0.875rem;font-weight:600;">${status}</span>
+                </td>
+                <td style="padding:1.25rem;color:var(--text-light);">${date}</td>
+              </tr>`;
+                }).join('');
+
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding:2rem;text-align:center;color:#ef4444;">Could not load reports. Make sure the server is running.</td></tr>`;
+            }
+        }
+
+        // Load on page open
+        loadMyReports();
+
+        // Reload when switching to "My Reports" tab
+        document.querySelectorAll('.sidebar-link[data-tab="reports"]').forEach(link => {
+            link.addEventListener('click', loadMyReports);
+        });
+
+        // Reload after submitting a new report (listen for modal close)
+        const modalOverlay = document.querySelector('.modal-overlay');
+        if (modalOverlay) {
+            const observer = new MutationObserver(() => {
+                if (modalOverlay.style.display === 'none') loadMyReports();
+            });
+            observer.observe(modalOverlay, { attributes: true, attributeFilter: ['style'] });
+        }
+    </script>
 </body>
 
 </html>
